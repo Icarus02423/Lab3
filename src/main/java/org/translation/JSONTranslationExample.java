@@ -23,7 +23,8 @@ public class JSONTranslationExample {
             // which we then create a new JSONArray object from.
             // TODO CheckStyle: Line is longer than 120 characters
             //                  (note: you can split a line such that the next line starts with a .method()... call
-            String jsonString = Files.readString(Paths.get(getClass().getClassLoader().getResource("sample.json").toURI()));
+            String jsonString = Files.readString(Paths.get(getClass()
+                    .getClassLoader().getResource("sample.json").toURI()));
             this.jsonArray = new JSONArray(jsonString);
         }
         catch (IOException | URISyntaxException ex) {
@@ -35,10 +36,11 @@ public class JSONTranslationExample {
      * Returns the Spanish translation of Canada.
      * @return the Spanish translation of Canada
      */
+    @SuppressWarnings("checkstyle:MagicNumber")
     public String getCanadaCountryNameSpanishTranslation() {
 
         // TODO Checkstyle: '30' is a magic number.
-        JSONObject canada = jsonArray.getJSONObject(30);
+        JSONObject canada = jsonArray.getJSONObject(CANADA_INDEX);
         return canada.getString("es");
     }
 
@@ -52,6 +54,13 @@ public class JSONTranslationExample {
      * @return the translation of country to the given language or "Country not found" if there is no translation.
      */
     public String getCountryNameTranslation(String countryCode, String languageCode) {
+        JSONObject jsonObject = new JSONObject();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            if (jsonObject.getString("alpha3").equals(countryCode)) {
+                return jsonObject.getString(languageCode);
+            }
+        }
         return "Country not found";
     }
 

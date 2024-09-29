@@ -15,6 +15,7 @@ import java.util.Map;
 public class CountryCodeConverter {
 
     // TODO Task: pick appropriate instance variable(s) to store the data necessary for this class
+    public Map<String, String> CountryCode = new HashMap<>();
 
     /**
      * Default constructor which will load the country codes from "country-codes.txt"
@@ -26,6 +27,7 @@ public class CountryCodeConverter {
 
     /**
      * Overloaded constructor which allows us to specify the filename to load the country code data from.
+     *
      * @param filename the name of the file in the resources folder to load the data from
      * @throws RuntimeException if the resource file can't be loaded properly
      */
@@ -37,6 +39,9 @@ public class CountryCodeConverter {
 
             // TODO Task: use lines to populate the instance variable(s)
 
+            for (String line : lines) {
+                CountryCode.put(line.split("\t")[0], line.split("\t")[2]);
+            }
         }
         catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -46,30 +51,40 @@ public class CountryCodeConverter {
 
     /**
      * Returns the name of the country for the given country code.
+     *
      * @param code the 3-letter code of the country
      * @return the name of the country corresponding to the code
      */
     public String fromCountryCode(String code) {
         // TODO Task: update this code to use an instance variable to return the correct value
-        return code;
+        for (String key : CountryCode.keySet()) {
+            if (CountryCode.get(key).equals(code.toUpperCase())) {
+                return key;
+            }
+        }
+        return null;
     }
 
     /**
      * Returns the code of the country for the given country name.
+     *
      * @param country the name of the country
      * @return the 3-letter code of the country
      */
     public String fromCountry(String country) {
         // TODO Task: update this code to use an instance variable to return the correct value
-        return country;
+        return CountryCode.get(country);
     }
 
     /**
      * Returns how many countries are included in this code converter.
+     *
      * @return how many countries are included in this code converter.
      */
     public int getNumCountries() {
         // TODO Task: update this code to use an instance variable to return the correct value
-        return 0;
+        return (CountryCode.size() - 1);
     }
+
 }
+
